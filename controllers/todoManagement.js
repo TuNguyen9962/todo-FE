@@ -1,8 +1,8 @@
 function TodoApp() {
   this.todoListData = [
-    { taskId: '1', userId: 1, name: 'Todo 1', isDone: true },
-    { taskId: '2', userId: 2, name: 'Todo 2', isDone: false },
-    { taskId: '3', userId: 1, name: 'Làm bài tập về nhà nhứ 3 trong tuần', isDone: false },
+    { taskId: '1', userId: '1', name: 'Todo 1', isDone: true },
+    { taskId: '2', userId: '2', name: 'Todo 2', isDone: false },
+    { taskId: '3', userId: '1', name: 'Làm bài tập về nhà nhứ 3 trong tuần', isDone: false },
   ];
   this.editingIndex = -1;
   this.todoNameInput = document.getElementById('task-name');
@@ -24,11 +24,11 @@ TodoApp.prototype.checkLogin = function () {
   if (storedUser) {
     if (storedUser.useId === null) {
       localStorage.removeItem('loggedInUser');
-      window.location.href = '../index.html';
+      window.location.href = '../../index.html';
     }
   }
   else {
-    window.location.href = '../index.html';
+    window.location.href = '../../index.html';
   }
 };
 
@@ -47,7 +47,7 @@ TodoApp.prototype.addOrEditTodo = function () {
   // const storedUser = localStorage.getItem('loggedInUser');
   const storedUser = sessionStorage.getItem('loggedInUser');
   const user = JSON.parse(storedUser);
-  const userID = parseInt(user.userId, 10);
+  const userID = user.userId;
   const taskName = this.todoNameInput.value.trim();
   const taskID = generateUID()
   console.log(taskID)
@@ -69,6 +69,7 @@ TodoApp.prototype.addOrEditTodo = function () {
 };
 
 TodoApp.prototype.renderList = function () {
+  // debugger
   const storedUser = sessionStorage.getItem('loggedInUser');
   // const storedUser = localStorage.getItem('loggedInUser');
   const todoList = localStorage.getItem('todoList')
@@ -79,7 +80,7 @@ TodoApp.prototype.renderList = function () {
       this.todoListData = JSON.parse(todoList)
     }
     const user = JSON.parse(storedUser);
-    const userID = parseInt(user.userId, 10);
+    const userID = user.userId;
 
     const filterValue = this.filterInput.value;
 
@@ -108,7 +109,7 @@ TodoApp.prototype.renderList = function () {
     });
   } else {
     // Chuyển màn hình tới login
-    window.location.href = '../index.html';
+    window.location.href = '../../index.html';
   }
 
 };

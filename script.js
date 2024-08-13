@@ -1,7 +1,7 @@
 function Login() {
     this.accountData = [
-      { userId: 1 ,username: 'admin', password: 'admin123' },
-      { userId: 2 ,username: 'tunguyen123', password: '123123' },
+      { userId: '1' ,username: 'admin', password: 'admin123' },
+      { userId: '2' ,username: 'tunguyen123', password: '123123' },
     ];
 
     this.usernameInput = document.getElementById('username');
@@ -22,9 +22,12 @@ function Login() {
     }
   };
   Login.prototype.login = function () {
-
-    localStorage.setItem('accountData',JSON.stringify(this.accountData));
-
+    const accountData = localStorage.getItem('accountData');
+    if (accountData) {
+      this.accountData = JSON.parse(accountData);
+    } else {
+      localStorage.setItem('accountData',JSON.stringify(this.accountData));
+    }
     const username = this.usernameInput.value
     const password = this.passwordInput.value
     const user = this.accountData.find(account => account.username === username);
@@ -39,7 +42,7 @@ function Login() {
             // localStorage.setItem('loggedInUser', JSON.stringify(user));
             sessionStorage.setItem('loggedInUser', JSON.stringify(user));
             // Chuyển màn hình
-            window.location.href = '../todoList/index.html';
+            window.location.href = './views/todoList/index.html';
         } else {
             alert('Wrong password');
             console.log("Wrong password")
