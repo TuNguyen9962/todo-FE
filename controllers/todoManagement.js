@@ -1,8 +1,8 @@
 function TodoApp() {
   this.todoListData = [
-    { taskId: '1', userId: '1', name: 'Todo 1', isDone: true },
-    { taskId: '2', userId: '2', name: 'Todo 2', isDone: false },
-    { taskId: '3', userId: '1', name: 'Làm bài tập về nhà nhứ 3 trong tuần', isDone: false },
+    // { taskId: '1', userId: 1, name: 'Todo 1', isDone: true },
+    // { taskId: '2', userId: 2, name: 'Todo 2', isDone: false },
+    // { taskId: '3', userId: 1, name: 'Làm bài tập về nhà nhứ 3 trong tuần', isDone: false },
   ];
   this.editingIndex = -1;
   this.todoNameInput = document.getElementById('task-name');
@@ -19,42 +19,68 @@ function TodoApp() {
 }
 
 TodoApp.prototype.checkLogin = function () {
+  // debugger
   const storedUser = sessionStorage.getItem('loggedInUser');
-  // const storedUser = localStorage.getItem('loggedInUser');
   if (storedUser) {
     if (storedUser.useId === null) {
       localStorage.removeItem('loggedInUser');
       window.location.href = '../../index.html';
+      console.log('session')
     }
   }
   else {
-    window.location.href = '../../index.html';
+    const storedUserLocal = localStorage.getItem('loggedInUser');
+    if (storedUserLocal) {
+      if (storedUserLocal.useId === null) {
+        localStorage.removeItem('loggedInUser');
+        window.location.href = '../../index.html';
+        console.log('local')
+      }
+    }
   }
 };
 
 TodoApp.prototype.logout = function () {
   sessionStorage.removeItem('loggedInUser');
-  // localStorage.removeItem('loggedInUser');
-  console.log("hi")
+  localStorage.removeItem('loggedInUser');
   this.renderList();
 };
-
+TodoApp.prototype.getUser = function () {
+  const storedUser = sessionStorage.getItem('loggedInUser');
+  if (storedUser) {
+    if (storedUser.useId !== null) {
+      return storedUser;
+    }
+  }
+  else {
+    const storedUserLocal = localStorage.getItem('loggedInUser');
+    if (storedUserLocal) {
+      if (storedUserLocal.useId !== null) {
+        return storedUserLocal;
+      }
+    }
+  }
+}
 TodoApp.prototype.addOrEditTodo = function () {
   this.checkLogin()
   function generateUID() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
   }
-  // const storedUser = localStorage.getItem('loggedInUser');
-  const storedUser = sessionStorage.getItem('loggedInUser');
+
+  const storedUser = this.getUser();
   const user = JSON.parse(storedUser);
-  const userID = user.userId;
   const taskName = this.todoNameInput.value.trim();
-  const taskID = generateUID()
+  const taskID = generateUID();
   console.log(taskID)
 
   if (taskName) {
     if (this.editingIndex === -1) {
-      this.todoListData.push({ taskId: taskID, userId: userID, name: taskName, isDone: false });
+      this.todoListData.push({
+        taskId: taskID,
+        userId: user.userId,
+        name: taskName,
+        isDone: false
+      });
 
     } else {
       this.todoListData[this.editingIndex].name = taskName;
@@ -69,9 +95,8 @@ TodoApp.prototype.addOrEditTodo = function () {
 };
 
 TodoApp.prototype.renderList = function () {
+  const storedUser = this.getUser();
   // debugger
-  const storedUser = sessionStorage.getItem('loggedInUser');
-  // const storedUser = localStorage.getItem('loggedInUser');
   const todoList = localStorage.getItem('todoList')
 
   if (storedUser) {
@@ -80,8 +105,7 @@ TodoApp.prototype.renderList = function () {
       this.todoListData = JSON.parse(todoList)
     }
     const user = JSON.parse(storedUser);
-    const userID = user.userId;
-
+    const userID = user.userId
     const filterValue = this.filterInput.value;
 
     // lọc todo theo người dùng
@@ -111,7 +135,6 @@ TodoApp.prototype.renderList = function () {
     // Chuyển màn hình tới login
     window.location.href = '../../index.html';
   }
-
 };
 
 TodoApp.prototype.editTodo = function (taskID) {
@@ -167,12 +190,5 @@ TodoApp.prototype.checkTodo = function (taskID) {
   localStorage.setItem('todoList', JSON.stringify(this.todoListData));
   this.renderList();
 };
-
-TodoApp.prototype.newUser = function () {
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const email = document.getElementById('email').value.trim();
-  
-}
 
 const app = new TodoApp();

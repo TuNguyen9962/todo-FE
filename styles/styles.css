@@ -13,7 +13,7 @@ body {
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	width: 400px;
+	width: 440px;
 }
 
 .input-container,
@@ -150,4 +150,17 @@ button.button-login {
 .button-logout {
 	height: fit-content;
 	background-color: red;
+}
+
+div.remember {
+  
+	margin-top: 10px;
+}
+
+
+
+.remember label {
+	display: inline-block;
+	font-size: 14px;
+	margin: auto
 }

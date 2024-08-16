@@ -1,1 +1,1 @@
-# todo-FE
+# todo-list-vanilla-js
