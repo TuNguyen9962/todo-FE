@@ -21,7 +21,6 @@ Register.prototype.checkLogin = function () {
 function checkUserOnRegister(username, password, repeatPassword) {
   if (password !== repeatPassword) {
     alert('Passwords do not match')
-    console.log('Passwords do not match')
   } else {
     const newUser = {
       username,
@@ -38,7 +37,6 @@ function checkUserOnRegister(username, password, repeatPassword) {
     localStorage.setItem('accountData', JSON.stringify(accountData));
 
     alert('Registration successful! You can now log in.')
-    console.log('Registration successful')
     window.location.href = '../../index.html';
   
     this.usernameInput.value = '';
@@ -57,7 +55,6 @@ Register.prototype.register = function () {
     checkUserOnRegister(username, password, repeatPassword)
   } else {
     alert('Invalid email address')
-    console.log('Invalid email address')
   }
 }
 
