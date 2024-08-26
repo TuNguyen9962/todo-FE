@@ -19,7 +19,7 @@ function TodoApp() {
 }
 
 TodoApp.prototype.checkLogin = function () {
-  // debugger
+
   const storedUser = sessionStorage.getItem('loggedInUser');
   if (storedUser) {
     if (storedUser.useId === null) {
@@ -28,6 +28,7 @@ TodoApp.prototype.checkLogin = function () {
     }
   }
   else {
+    
     const storedUserLocal = localStorage.getItem('loggedInUser');
     if (storedUserLocal) {
       if (storedUserLocal.useId === null) {
@@ -98,7 +99,7 @@ TodoApp.prototype.addOrEditTodo = function () {
 TodoApp.prototype.renderList = function () {
   const storedUser = this.getUser();
   const todoList = localStorage.getItem('todoList')
-  if (storedUser) {
+  if (!storedUser) {
     // Chuyển màn hình tới login
     window.location.href = '../../index.html';
   }
